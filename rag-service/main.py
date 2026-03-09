@@ -16,6 +16,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 import logging
+import httpx
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
@@ -179,6 +180,15 @@ async def query_knowledge_base(request: QueryRequest):
         raise HTTPException(
             status_code=504,
             detail="LLM response timed out. The model may be loading. Try again.",
+        )
+    except httpx.HTTPStatusError as e:
+        # This fires when Ollama returns 4xx/5xx — most commonly: model not downloaded
+        raise HTTPException(
+            status_code=503,
+            detail=(
+                f"Ollama returned an error: {e.response.text}. "
+                f"Make sure the model is downloaded: ollama pull {settings.ollama_model}"
+            ),
         )
     except Exception as e:
         logger.error(f"Query failed: {e}", exc_info=True)

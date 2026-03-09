@@ -126,13 +126,24 @@ class RAGEngine:
             chunks = self._chunk_text(doc.content)
             logger.info(f"Document '{doc.id}' → {len(chunks)} chunks")
 
+            # ChromaDB only allows str/int/float/bool in metadata.
+            # Convert any list values (e.g. tags) to comma-separated strings.
+            safe_metadata = {}
+            for k, v in (doc.metadata or {}).items():
+                if isinstance(v, list):
+                    safe_metadata[k] = ", ".join(str(x) for x in v)
+                elif isinstance(v, (str, int, float, bool)):
+                    safe_metadata[k] = v
+                else:
+                    safe_metadata[k] = str(v)
+
             for i, chunk in enumerate(chunks):
                 # Each chunk needs a unique ID — we build it from doc ID + index
                 chunk_id = f"{doc.id}__chunk_{i}"
                 all_ids.append(chunk_id)
                 all_texts.append(chunk)
                 all_metadatas.append({
-                    **doc.metadata,        # Preserve original metadata
+                    **safe_metadata,       # Preserve original metadata (sanitised)
                     "source_id": doc.id,   # Which document this came from
                     "chunk_index": i,      # Which chunk number within the doc
                     "total_chunks": len(chunks),
