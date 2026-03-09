@@ -1,0 +1,32 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# requirements.txt — Python dependencies for the TISIX RAG Microservice
+#
+# WHY these specific packages?
+#
+# fastapi          → The web framework. Modern, async, auto-docs at /docs
+# uvicorn          → The ASGI server that runs FastAPI (like gunicorn for Flask)
+#                    [standard] extra adds websocket + http tools
+# pydantic         → Data validation. FastAPI uses this internally too.
+# pydantic-settings→ Extension for reading settings from .env files
+# chromadb         → Vector database (in-process, stores embeddings to disk)
+# sentence-transformers → Converts text to embedding vectors (all-MiniLM-L6-v2)
+#                         Downloads ~80MB model on first run (cached after)
+# httpx            → HTTP client to call Ollama API. Better than requests for
+#                    async code. Used for LLM generation calls.
+# python-dotenv    → Reads .env files (though pydantic-settings handles this too,
+#                    good to have explicitly)
+#
+# NOT included and why:
+# - openai: We use Ollama locally (free, private, no API key)
+# - langchain: Adds too much abstraction. For a trial day, raw code is clearer.
+# - torch: Sentence-transformers downloads its own minimal torch via ONNX
+# ─────────────────────────────────────────────────────────────────────────────
+
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+pydantic==2.10.3
+pydantic-settings==2.7.0
+chromadb==0.5.23
+sentence-transformers==3.3.1
+httpx==0.28.1
+python-dotenv==1.0.1

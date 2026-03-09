@@ -1,0 +1,73 @@
+# docker-compose.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# WHY docker-compose (not just docker run)?
+#   docker-compose lets you define the full multi-service environment in one
+#   file and start everything with 'docker-compose up'. Much better than
+#   remembering a long 'docker run' command with all its flags.
+#
+# ARCHITECTURE:
+#   Your Mac:
+#     [Ollama LLM server]  ← running natively for GPU/Metal access
+#           ↑
+#           │ host.docker.internal:11434
+#           │
+#   Docker network:
+#     [rag-service container]  ← this file manages this
+#           │
+#     [chroma_data volume]     ← persistent ChromaDB data across restarts
+#
+# WHY Ollama is NOT in docker-compose:
+#   Ollama needs access to Apple Silicon's Metal GPU for fast inference.
+#   Docker containers on Mac cannot access Metal. So Ollama runs natively
+#   on the host, and the container reaches it via host.docker.internal.
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "3.9"
+
+services:
+  rag-service:
+    # Build from the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # Map host port 8000 → container port 8000
+    # Access the API at http://localhost:8000
+    ports:
+      - "8000:8000"
+
+    # Named volume for ChromaDB — data persists even if container is removed
+    volumes:
+      - chroma_data:/app/chroma_db
+
+    # Environment variables passed into the container
+    # These override the defaults in config.py
+    environment:
+      # host.docker.internal is a special Docker hostname that resolves to
+      # the host machine (your Mac) — this is how the container reaches Ollama
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - OLLAMA_MODEL=llama3.2:3b
+      - CHROMA_PERSIST_DIR=/app/chroma_db
+      - COLLECTION_NAME=publisher_docs
+
+    # Required on Linux hosts for host.docker.internal to work
+    # On Mac Docker Desktop, this is handled automatically
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    # Auto-restart unless manually stopped
+    restart: unless-stopped
+
+    # Health check: Docker will periodically call /health and restart the
+    # container if it fails 3 times in a row
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s  # Give extra time at startup for model loading
+
+# Named volumes are managed by Docker and persist across container restarts
+volumes:
+  chroma_data:
+    driver: local

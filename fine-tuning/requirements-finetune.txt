@@ -1,0 +1,35 @@
+# requirements-finetune.txt — Fine-tuning dependencies
+#
+# WHY separate from rag-service/requirements.txt?
+#   Fine-tuning requires heavy GPU libraries (torch, bitsandbytes) that are
+#   NOT needed to run the RAG API service. Keeping them separate means the
+#   production Docker image stays lean.
+#
+# NOTE: bitsandbytes requires CUDA (Nvidia GPU on Linux).
+#       On Mac (MPS), install without bitsandbytes and use fp16 training.
+#
+# Install for GPU server (Linux + CUDA):
+#   pip install -r requirements-finetune.txt
+#
+# Install for Mac (development/testing only):
+#   pip install torch transformers peft trl datasets accelerate
+#   (skip bitsandbytes — 4-bit quant not supported on MPS)
+
+# Core deep learning framework
+torch==2.5.1                # PyTorch — the foundation everything runs on
+
+# Hugging Face ecosystem
+transformers==4.47.1        # Load any HuggingFace model + tokenizer
+peft==0.14.0                # LoRA / QLoRA adapter training
+trl==0.13.0                 # SFTTrainer — simplifies instruction fine-tuning
+datasets==3.2.0             # Load and process training datasets
+accelerate==1.2.1           # Multi-GPU / mixed-precision training utilities
+
+# Quantization (CUDA only — skip on Mac)
+bitsandbytes==0.45.0        # 4-bit and 8-bit quantization for QLoRA
+
+# Experiment tracking (optional but recommended for real training runs)
+# wandb==0.19.1             # Uncomment to track training metrics in W&B
+
+# Hugging Face Hub — needed to download gated models like Llama
+huggingface_hub==0.27.0

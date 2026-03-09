@@ -1,0 +1,112 @@
+[
+  {
+    "id": "article_001",
+    "content": "AI-Powered Content Creation in Modern Publishing. The publishing industry is undergoing a fundamental transformation driven by artificial intelligence. Large Language Models (LLMs) like GPT-4 and Llama have opened new possibilities for editorial teams, enabling them to generate first drafts, summarize long documents, and suggest headlines within seconds. At TISIX, we have observed that editorial teams using AI-assisted workflows reduce their content production time by up to 40 percent, while maintaining high quality standards through human review processes. The key is not to replace journalists, but to eliminate repetitive tasks that consume their creative energy. AI excels at generating structured summaries, translating content between languages, formatting articles to specific style guides, and identifying factual inconsistencies. However, AI still struggles with investigative journalism that requires source cultivation, emotional storytelling, and nuanced political analysis. The most effective implementations combine AI speed with human editorial judgment.",
+    "metadata": {
+      "category": "AI in Publishing",
+      "author": "TISIX Editorial Team",
+      "date": "2025-11-01",
+      "language": "en",
+      "tags": ["AI", "publishing", "LLM", "content creation", "editorial"]
+    }
+  },
+  {
+    "id": "article_002",
+    "content": "Retrieval-Augmented Generation for Newsrooms: A Practical Guide. Traditional LLMs have a knowledge cutoff date and cannot access your proprietary documents. RAG (Retrieval-Augmented Generation) solves this by giving the LLM access to a live knowledge base of your own documents. In a newsroom context, this means journalists can ask questions like 'What did our newspaper write about climate policy in Bavaria in 2024?' and receive accurate, source-attributed answers pulled from your own archive. The RAG pipeline works in three phases: First, the ingestion phase where existing articles are split into chunks and converted into numerical vectors (embeddings) that capture their semantic meaning. Second, the retrieval phase where an incoming question is also converted into a vector, and the most similar document chunks are found using vector similarity search. Third, the generation phase where the retrieved chunks and the original question are passed to an LLM, which formulates a coherent answer. Companies like TISIX implement RAG systems using ChromaDB or Qdrant as vector databases and Llama-3 as the generation model. The result is a system that can answer questions about your specific content without any hallucination, because every answer is grounded in your actual documents.",
+    "metadata": {
+      "category": "RAG Technology",
+      "author": "Dr. Simonas Cerniauskas",
+      "date": "2025-10-15",
+      "language": "en",
+      "tags": ["RAG", "vector database", "ChromaDB", "LLM", "newsroom", "embeddings"]
+    }
+  },
+  {
+    "id": "article_003",
+    "content": "Quality Assurance in AI Systems: Why It Cannot Be an Afterthought. As AI systems are deployed in production environments, quality assurance becomes the most critical and most overlooked component. At TISIX, quality assurance for AI systems encompasses three dimensions: output quality, system reliability, and ethical compliance. Output quality measures whether the AI produces accurate, relevant, and well-formatted results. For a publishing AI, this means checking factual accuracy, detecting hallucinations (fabricated information), ensuring brand voice consistency, and validating that generated content meets legal requirements. System reliability covers uptime, response latency, error rates, and graceful degradation when models fail. A production AI service must handle model timeouts, return informative error messages, implement retry logic, and fall back to simpler responses when the LLM is unavailable. Ethical compliance is particularly important in Germany and the EU, where the AI Act imposes strict requirements on high-risk AI systems, including transparency obligations, human oversight requirements, and documentation of training data. TISIX recommends implementing automated test suites that run against AI outputs daily, using golden datasets to detect regression in model quality, and maintaining human review loops for any AI-generated content that reaches end users.",
+    "metadata": {
+      "category": "AI Quality Assurance",
+      "author": "Dr. Timo Kannengiesser",
+      "date": "2025-09-20",
+      "language": "en",
+      "tags": ["quality assurance", "AI testing", "EU AI Act", "hallucination", "production AI"]
+    }
+  },
+  {
+    "id": "article_004",
+    "content": "Fine-Tuning vs. Prompt Engineering vs. RAG: Choosing the Right Approach. When building AI applications for specific domains, teams face a critical decision: should they fine-tune a model, engineer better prompts, or use RAG? Each approach has distinct trade-offs. Prompt engineering is the fastest and cheapest approach. By carefully crafting the instructions given to an off-the-shelf LLM, you can achieve surprisingly good results for many tasks. It requires no training data and can be iterated quickly. However, it has limits: you cannot teach a model new knowledge through prompts, and for highly specialized domains, prompts alone may not produce the required quality. RAG is ideal when your use case requires access to specific, up-to-date documents that the LLM was not trained on. It is particularly powerful for Q&A over company documents, legal contracts, product manuals, or news archives. RAG does not change the model itself; it just gives it better context at query time. Fine-tuning is appropriate when you need to change the model's behavior, style, or specialized knowledge at a fundamental level. For example, training a model to always respond in a specific journalistic style, to understand proprietary medical terminology, or to follow a strict output format. Fine-tuning requires labeled training data (typically hundreds to thousands of examples), compute resources, and more time. QLoRA (Quantized LoRA) makes fine-tuning feasible even on consumer hardware by quantizing the base model to 4-bit precision and only training small adapter layers. At TISIX, we recommend starting with prompt engineering, moving to RAG when document access is needed, and reserving fine-tuning for cases where the first two approaches are insufficient.",
+    "metadata": {
+      "category": "AI Strategy",
+      "author": "TISIX AI Team",
+      "date": "2025-08-10",
+      "language": "en",
+      "tags": ["fine-tuning", "RAG", "prompt engineering", "QLoRA", "LoRA", "LLM strategy"]
+    }
+  },
+  {
+    "id": "article_005",
+    "content": "Microservice Architecture for AI Applications: Best Practices. Deploying AI models as microservices is the standard approach for production systems. A microservice wraps an AI model behind a REST API, allowing any application to call it regardless of programming language or platform. The most important best practices for AI microservices are: First, always define clear input and output schemas using Pydantic models in FastAPI. This ensures callers know exactly what format to send and what to expect back. Second, implement health check endpoints so orchestration systems like Kubernetes know when the service is ready to accept traffic. A health check should verify not just that the server is running, but that the AI model is loaded and responsive. Third, handle errors gracefully. LLM inference can be slow, and models can timeout. Return informative HTTP error codes: 400 for bad input, 503 for LLM unavailable, 504 for timeout. Fourth, use Docker to containerize the service. This ensures identical behavior in development, staging, and production environments, regardless of the host machine's configuration. Fifth, implement logging at every step of the AI pipeline so you can debug issues in production. Log input queries (after anonymization), retrieval results, and generation outputs. Sixth, consider streaming responses for long LLM outputs so users see results progressively instead of waiting. FastAPI supports streaming via StreamingResponse. TISIX deploys all AI services as Docker containers, typically behind a Nginx reverse proxy or Kubernetes ingress, with Prometheus metrics for monitoring.",
+    "metadata": {
+      "category": "Software Architecture",
+      "author": "TISIX Engineering",
+      "date": "2025-07-05",
+      "language": "en",
+      "tags": ["microservices", "FastAPI", "Docker", "Kubernetes", "REST API", "production AI"]
+    }
+  },
+  {
+    "id": "article_006",
+    "content": "The Verlags-Copilot: How TISIX is Transforming German Publishing. The German publishing industry faces unique challenges: high quality standards, complex legal requirements around press law, multilingual content demands, and competitive pressure from digital native media companies. TISIX's Verlags-Copilot (Publisher Copilot) is a managed AI service specifically designed for editorial teams at German publishers, newspapers, and media houses. The system integrates directly with existing content management systems and provides AI assistance for the full editorial workflow. Key features include: Automated article summaries in German, English, and other languages, allowing publishers to reach international audiences without additional translation costs. AI-powered headline suggestions based on the article content, calibrated to the publication's style guide and target audience. Content reuse automation, which identifies related articles in the archive and suggests updates or connections to current news. Fact-checking assistance that cross-references claims in draft articles against a curated database of verified sources. Quality gate automation, which flags potential issues before publication including grammatical errors, inconsistent terminology, and potential legal risks. The Verlags-Copilot is built on a multimodal LLM pipeline that processes text, images, and audio, making it suitable for multimedia publishers who produce articles, podcasts, and video content. TISIX provides the system as a fully managed service with German data sovereignty, meaning all data is processed on German servers in compliance with GDPR.",
+    "metadata": {
+      "category": "TISIX Products",
+      "author": "Julia König",
+      "date": "2025-12-01",
+      "language": "en",
+      "tags": ["Verlags-Copilot", "German publishing", "editorial AI", "GDPR", "multimodal", "content management"]
+    }
+  },
+  {
+    "id": "article_007",
+    "content": "EU AI Act and Its Impact on AI Service Providers in Germany. The EU AI Act, which came into force in August 2024, is the world's first comprehensive AI regulation framework. For AI service providers like TISIX operating in Germany and the EU, compliance is not optional. The Act categorizes AI systems into four risk levels: unacceptable risk (banned), high risk (strict requirements), limited risk (transparency obligations), and minimal risk (largely unregulated). General-purpose LLM services used in editorial and publishing contexts typically fall into the limited risk category, requiring transparency obligations such as informing users when they are interacting with AI-generated content. High-risk categories relevant to the publishing industry include AI systems used for hiring decisions, credit scoring, or law enforcement, which require extensive documentation, human oversight, bias testing, and registration with EU authorities. Key compliance requirements for AI service providers include maintaining technical documentation of AI systems, implementing data governance procedures, logging AI system decisions for audit purposes, providing clear human override mechanisms, and conducting regular conformity assessments. TISIX has established an AI governance framework that ensures all its products meet EU AI Act requirements, including a dedicated responsible AI officer, quarterly compliance reviews, and automatic quality monitoring of all deployed AI systems.",
+    "metadata": {
+      "category": "AI Regulation",
+      "author": "Dr. Timo Kannengiesser",
+      "date": "2025-06-15",
+      "language": "en",
+      "tags": ["EU AI Act", "compliance", "regulation", "Germany", "GDPR", "responsible AI"]
+    }
+  },
+  {
+    "id": "article_008",
+    "content": "Vector Databases Explained: ChromaDB vs Qdrant vs Pinecone. A vector database is the backbone of any RAG system. It stores text as high-dimensional numerical vectors (embeddings) and enables extremely fast similarity search across millions of documents. Choosing the right vector database depends on your scale, budget, and operational requirements. ChromaDB is a pure-Python vector database that is trivial to set up and perfect for prototypes, small deployments, and development environments. It stores data locally on disk and supports all major embedding models. Its limitations are throughput (not designed for millions of concurrent queries) and lack of distributed deployment options. Qdrant is a production-grade vector database written in Rust, offering high throughput, filtering on metadata, and distributed deployment for large-scale systems. It supports Docker deployment and has a managed cloud offering. TISIX uses Qdrant for production workloads that require filtering documents by date, category, or source while simultaneously doing semantic search. Pinecone is a fully managed cloud vector database with no infrastructure to manage. It is the fastest to get started but has ongoing costs and means your data lives in a US cloud (which can be problematic for GDPR compliance). Weaviate is another option that integrates directly with several embedding models and offers GraphQL queries. For the trial day task, ChromaDB is the right choice because it requires zero setup beyond pip install, persists to disk, and is more than capable for small to medium knowledge bases.",
+    "metadata": {
+      "category": "Technology Comparison",
+      "author": "Dr. Simonas Cerniauskas",
+      "date": "2025-05-20",
+      "language": "en",
+      "tags": ["ChromaDB", "Qdrant", "Pinecone", "vector database", "embeddings", "RAG infrastructure"]
+    }
+  },
+  {
+    "id": "article_009",
+    "content": "Running LLMs Locally with Ollama: The Developer's Guide. Ollama is a tool that makes running large language models on your local machine as simple as running a single terminal command. It handles model download, quantization, hardware optimization, and serves a REST API that is compatible with the OpenAI API format. To run Llama 3.2 (3 billion parameters) on a MacBook, you simply install Ollama and run the command 'ollama run llama3.2:3b'. The model downloads automatically and runs using Apple's Metal GPU acceleration on Apple Silicon Macs. The key models available through Ollama for 2025 include: Llama 3.2 3B (2GB, fast, good for demos), Llama 3.2 1B (1.3GB, fastest, basic quality), Phi-4 (14B, excellent reasoning but requires 8GB+ RAM), Mistral 7B (4.1GB, very good balance of speed and quality), and Deepseek-R1 7B (4.7GB, strong reasoning). Ollama exposes a REST API at localhost:11434 with endpoints like /api/generate for text generation and /api/embeddings for converting text to vectors. This means your FastAPI microservice can call Ollama just like it would call the OpenAI API, making it easy to switch between local and cloud models. For production deployments where GPU servers are available, alternatives to Ollama include vLLM (highest throughput with GPU batching) and Text Generation Inference by Hugging Face (production-ready, used by HuggingFace). Ollama is not recommended for high-concurrency production workloads but is ideal for development, testing, and low-volume deployments.",
+    "metadata": {
+      "category": "LLM Infrastructure",
+      "author": "TISIX Engineering",
+      "date": "2025-04-10",
+      "language": "en",
+      "tags": ["Ollama", "LLM", "local inference", "Llama", "vLLM", "TGI", "MacBook"]
+    }
+  },
+  {
+    "id": "article_010",
+    "content": "Docker for AI Applications: From Development to Production. Docker is a containerization technology that packages your application and all its dependencies into a single, portable unit called a container. For AI microservices, Docker solves the classic problem of 'it works on my machine but not in production' because the container always runs the same way regardless of the host environment. A Dockerfile describes how to build your container image: start from a base Python image, install system dependencies, copy your code, install Python packages, and specify the command to run. For AI services specifically, important Dockerfile considerations include: using slim base images (python:3.11-slim rather than full python:3.11) to keep image size small, not including model weights in the Docker image (models should be downloaded at runtime or mounted as volumes), setting up proper logging configurations, exposing the correct port, and running as a non-root user for security. Docker Compose is a tool for running multiple containers together. For a RAG microservice, a typical docker-compose.yml defines the FastAPI service (your code), and optionally a vector database container (Qdrant) and an LLM runtime container. The services can communicate with each other using their service names as hostnames within the Docker network. When running Ollama on the host machine and accessing it from inside a Docker container on Mac, use the hostname host.docker.internal which Docker maps to the host machine's IP address. TISIX uses Docker in all its deployments, with GitLab CI/CD automatically building and pushing updated images to a container registry whenever code is pushed to the main branch.",
+    "metadata": {
+      "category": "DevOps for AI",
+      "author": "TISIX Engineering",
+      "date": "2025-03-01",
+      "language": "en",
+      "tags": ["Docker", "containers", "DevOps", "CI/CD", "GitLab", "production deployment"]
+    }
+  }
+]
