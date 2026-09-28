@@ -6,7 +6,7 @@
 ## Project Structure
 
 ```
-Prep1/
+RAG-Microservice/
 ├── rag-service/                 ← The main microservice (most important!)
 │   ├── main.py                  ← FastAPI app with all endpoints
 │   ├── rag_engine.py            ← RAG logic: ingest, retrieve, generate
