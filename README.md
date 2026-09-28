@@ -1,4 +1,3 @@
-# TISIX AI Developer — Trial Day Project
 
 > **RAG Microservice + Fine-Tuning Demo**
 > Built for TISIX.io trial day interview — Cologne, Germany
